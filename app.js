@@ -3,18 +3,16 @@ const morgan = require('morgan')
 const nunjucks = require('nunjucks');
 const tweetBank = require('./tweetBank.js');
 const app = express();
+const routes = require('./routes');
 
 app.use(morgan('combined'))
-// app.get('/', function(request, response) {
-//   response.render('index', locals);
-// })
 
-// app.use('/special', function(request, response, next) {
-//   if(response.statusCode === 200){
-//     response.send('This is the status: 200')
-//   }
-//   console.log("You've reached the special area")
-// })
+app.use('/', routes)
+
+
+app.use(express.static('public'));
+
+
 
 const locals = {
   title : 'An Example',
@@ -35,23 +33,6 @@ app.set('view engine', 'html')
 
 
 
-// express routes
-
-app.get('/', function(request, response, next) {
-  response.send(tweetBank.list());
-
-});
-
-app.get('/tweets', function(request, response, next) {
-  response.send(tweetBank.find().forEach(function(tweetData) {
-    return tweetData.content.toString();
-  }));
-})
-
-
-app.post('/tweets', function(request, response, next) {
-  response.send(tweetBank.add())
-})
 
 
 
