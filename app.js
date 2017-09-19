@@ -1,25 +1,20 @@
 const express = require('express');
 const morgan = require('morgan')
 const nunjucks = require('nunjucks');
-
-
-const app = express(); // creates an instance of an express application
-
-
-app.get('/', function(request, response) {
-  response.render('index', locals);
-})
+const tweetBank = require('./tweetBank.js');
+const app = express();
 
 app.use(morgan('combined'))
+// app.get('/', function(request, response) {
+//   response.render('index', locals);
+// })
 
-app.use('/special', function(request, response, next) {
-  if(response.statusCode === 200){
-    response.send('This is the status: 200')
-  }
-  console.log("You've reached the special area")
-})
-
-
+// app.use('/special', function(request, response, next) {
+//   if(response.statusCode === 200){
+//     response.send('This is the status: 200')
+//   }
+//   console.log("You've reached the special area")
+// })
 
 const locals = {
   title : 'An Example',
@@ -30,13 +25,49 @@ const locals = {
   ]
 };
 
+//nunjucks set up
 nunjucks.configure('views', {noCache : true})
 nunjucks.render('index.html', locals, function(err, res){
   console.log(res)
 })
-
 app.engine('html', nunjucks.render)
 app.set('view engine', 'html')
+
+
+
+// express routes
+
+app.get('/', function(request, response, next) {
+  response.send(tweetBank.list());
+
+});
+
+app.get('/tweets', function(request, response, next) {
+  response.send(tweetBank.find().forEach(function(tweetData) {
+    return tweetData.content.toString();
+  }));
+})
+
+
+app.post('/tweets', function(request, response, next) {
+  response.send(tweetBank.add())
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

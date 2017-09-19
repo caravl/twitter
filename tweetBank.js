@@ -1,7 +1,7 @@
 // holding all tweets and methods for interacting with them
 const _ = require('lodash');
 
-var data = [{yorkie: 'yorkie'}, {shephard: 'shephard'}];
+var data = [];
 
 function add (name, content) {
   data.push({ name: name, content: content });
@@ -32,3 +32,7 @@ const getFakeTweet = function() {
   const awesome_adj = ['awesome', 'breathtaking', 'amazing', 'funny', 'sweet', 'cool', 'wonderful', 'mindblowing', 'impressive'];
   return "Fullstack Academy is " + randArrayEl(awesome_adj) + "! The instructors are just so " + randArrayEl(awesome_adj) + ". #fullstacklove #codedreams";
 };
+
+for (var i = 0; i < 10; i++) {
+  module.exports.add(getFakeName(), getFakeTweet());
+}
