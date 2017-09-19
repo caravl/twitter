@@ -4,32 +4,22 @@ const nunjucks = require('nunjucks');
 const tweetBank = require('./tweetBank.js');
 const app = express();
 const routes = require('./routes');
+const bodyParser = require('body-parser')
 
 app.use(morgan('combined'))
 
 app.use('/', routes)
-
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 app.use(express.static('public'));
+app.engine('html', nunjucks.render)
+app.set('view engine', 'html')
 
-
-
-const locals = {
-  title : 'An Example',
-  people : [
-    {name: 'Gandalf'},
-    {name: 'Frodo'},
-    {name: 'Hermione'}
-  ]
-};
 
 //nunjucks set up
 nunjucks.configure('views', {noCache : true})
-nunjucks.render('index.html', locals, function(err, res){
-  console.log(res)
-})
-app.engine('html', nunjucks.render)
-app.set('view engine', 'html')
+
 
 
 
